@@ -1,0 +1,7 @@
+.env
+.idea
+*.pyc
+*.sqlite3
+firebase_credentials.py
+static
+staticfiles
