@@ -18,6 +18,7 @@ jobs:
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
     - name: Deploy using ssh
+      uses: actions/checkout@v1
       with:
         host: ${{ secrets.DEV_SERVER_HOST }}
         username: ${{ secrets.DEV_SERVER_USERNAME }}
