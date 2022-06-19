@@ -1,6 +1,5 @@
 import os
 from pathlib import Path
-from dotenv import load_dotenv
 from decouple import config
 
 # Load the .env file  and interpolate the values to environment  variables
@@ -13,7 +12,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = config('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = config('DEBUG', default=True, cast=bool)
 
 ALLOWED_HOSTS = ['*']
 
@@ -28,6 +27,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     'drf_yasg',
+
     "picman_studio_backend.apps.company",
     "picman_studio_backend.apps.project",
     "picman_studio_backend.apps.user",

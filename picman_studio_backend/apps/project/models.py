@@ -17,6 +17,8 @@ class Project(BaseModel):
     updated_by = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True,
                                    related_name='project_updated_by')
 
+    access_permissions = ArrayField(models.EmailField(max_length=30), null=True, blank=True)
+
     objects = BaseManager()
 
     def __str__(self):
@@ -41,7 +43,6 @@ class ProjectMedia(BaseModel):
                                    related_name='media_created_by')
     updated_by = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True,
                                    related_name='media_updated_by')
-    access_permissions = ArrayField(models.EmailField(max_length=30), null=True, blank=True)
 
     objects = BaseManager()
 
@@ -56,8 +57,10 @@ class Client(BaseModel):
     name = models.CharField(max_length=100, null=True, blank=True, unique=True)
     phone = models.CharField(max_length=100, null=True, blank=True, unique=True)
     email = models.EmailField(max_length=100, null=True, blank=True)
+    address = models.TextField(null=True, blank=True)
+    company = models.ForeignKey(Company, on_delete=models.CASCADE, null=True, blank=True)
     client_id = models.CharField(max_length=20, default=id_generator('CLI_'), editable=False)
-    project = models.ForeignKey(Project, on_delete=models.CASCADE, null=True, blank=True)
+    project = models.ManyToManyField(Project, blank=True)
     created_by = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True,
                                    related_name='client_created_by')
     updated_by = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True,
@@ -70,3 +73,45 @@ class Client(BaseModel):
 
     class Meta:
         db_table = 'CLIENT'
+
+
+class Event(BaseModel):
+    name = models.CharField(max_length=100, null=True, blank=True, unique=True)
+    location = models.CharField(max_length=255, null=True, blank=True)
+    date = models.DateTimeField(null=True, blank=True)
+    event_id = models.CharField(max_length=20, default=id_generator('EVENT_'), editable=False)
+    company = models.ForeignKey(Company, on_delete=models.SET_NULL, null=True, blank=True)
+    created_by = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True,
+                                   related_name='event_created_by')
+    updated_by = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True,
+                                   related_name='event_updated_by')
+
+    participants = ArrayField(models.EmailField(max_length=30), null=True, blank=True)
+
+    objects = BaseManager()
+
+    def __str__(self):
+        return self.id.__str__()
+
+    class Meta:
+        db_table = 'EVENTS'
+
+
+class Album(BaseModel):
+    title = models.CharField(max_length=100, null=True, blank=True, unique=True)
+    album_id = models.CharField(max_length=20, default=id_generator('ALB_'), editable=False)
+    file = models.URLField(max_length=255, null=True, blank=True)
+    project = models.ForeignKey(Project, on_delete=models.SET_NULL, null=True, blank=True)
+    created_by = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True,
+                                   related_name='album_created_by')
+    updated_by = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True,
+                                   related_name='album_updated_by')
+    access = ArrayField(models.EmailField(max_length=30), null=True, blank=True)
+
+    objects = BaseManager()
+
+    def __str__(self):
+        return self.id.__str__()
+
+    class Meta:
+        db_table = 'ALBUM'

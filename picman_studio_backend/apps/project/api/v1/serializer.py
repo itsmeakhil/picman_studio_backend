@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from picman_studio_backend.apps.project.models import Project
+from picman_studio_backend.apps.project.models import Project, Client, Event, Album
 
 
 class ProjectSerializer(serializers.ModelSerializer):
@@ -27,7 +27,19 @@ class ProjectUpdateSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
+class ClientSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Client
+        fields = '__all__'
+
+
 class EventSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Project
+        model = Event
+        fields = '__all__'
+
+
+class AlbumSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Album
         fields = '__all__'

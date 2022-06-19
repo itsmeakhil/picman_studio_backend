@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from picman_studio_backend.apps.company.models import Company
+from picman_studio_backend.apps.company.models import Company, Contact
 
 
 class CompanySerializer(serializers.ModelSerializer):
@@ -27,7 +27,7 @@ class CompanyUpdateSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
-class EventSerializer(serializers.ModelSerializer):
+class ContactSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Company
+        model = Contact
         fields = '__all__'
